@@ -3,18 +3,91 @@
 
 #include <iostream>
 
-int main()
+struct Node
 {
-    std::cout << "Hello World!\n";
+	int value;
+	Node* next;
+};
+
+void createNode(Node** head, int data) {
+	//receive head of linked list as node
+	Node * tmpNode = new Node();
+	tmpNode->value = data;
+	tmpNode->next = NULL;
+	//check if there are other nodes in list
+	if (*head == NULL)
+	{	
+		*head = tmpNode;
+		return;
+	}
+
+	//insert Node after last node
+	Node * last = *head;
+	while (last->next != NULL)
+	{
+		last = last->next;
+	}
+
+	last->next = tmpNode;
+
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+//insert at the beginning
+void insert_at_beginning(Node ** head, int data) {
+	Node * tmp = new Node();
+	tmp->value = data;
+	tmp->next = *head;
+	*head = tmp;
+}
+
+//insert at any location
+void insert_anywhere(Node ** head, int loc, int data) {
+	Node * tmp = new Node();
+	
+	tmp->value = data;
+	Node * location = *head;
+	while (location != NULL)
+	{	
+		if (location->value == loc ) {
+			tmp->next = location->next;
+			location->next = tmp;
+			break;
+		}
+
+		location = location->next;
+	}
+}
+
+void delete_last_node(Node * head) {
+
+	if (head->next == NULL)
+	{
+		delete head;
+		return ;
+	}
+}
+
+
+int main()
+{
+    //create a new node
+	Node * head = new Node();
+	head = NULL;
+	createNode(&head, 3);
+	createNode(&head, 7);
+	createNode(&head, 9);
+	createNode(&head, 11);
+
+	insert_at_beginning(&head, 1);
+	insert_anywhere(&head, 7, 20);
+	delete_last_node(head);
+
+	while (head != NULL)
+	{
+		std::cout << head->value << std::endl;
+		head = head->next;
+	}
+}
+
+
