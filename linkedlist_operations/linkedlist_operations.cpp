@@ -13,7 +13,7 @@ void createNode(Node** head, int data) {
 	//receive head of linked list as node
 	Node * tmpNode = new Node();
 	tmpNode->value = data;
-	tmpNode->next = NULL;
+	//tmpNode->next = NULL;
 	//check if there are other nodes in list
 	if (*head == NULL)
 	{	
@@ -41,7 +41,7 @@ void insert_at_beginning(Node ** head, int data) {
 	*head = tmp;
 }
 
-//insert at any location
+//insert after specified location
 void insert_anywhere(Node ** head, int loc, int data) {
 	Node * tmp = new Node();
 	
@@ -59,13 +59,49 @@ void insert_anywhere(Node ** head, int loc, int data) {
 	}
 }
 
-void delete_last_node(Node * head) {
+//delete a node
+Node * delete_a_node(Node * head, int data) {
+	Node * location = new Node();
+	Node * prev = new Node();
 
-	if (head->next == NULL)
+	//check if list is empty
+	while (head != NULL)
 	{
-		delete head;
-		return ;
+
+		if (head->value == data) {
+			location = head;
+			break;
+		}
+		prev = head;
+		head = head->next;
 	}
+
+	//first if to delete the first node in the list
+	if (prev->value == NULL)
+	{
+		head = location->next;
+		delete location;
+
+		return head;
+	}
+	else 
+	{
+		//delete node unless it is the last node in the list
+		if (location->next != NULL) {
+	
+			prev->next = location->next;
+			delete location;
+			return head;
+		}
+		//delete last node in the list
+		else
+		{
+			prev->next = NULL;
+			delete location;
+			return head;
+		}
+	}
+
 }
 
 
@@ -78,14 +114,30 @@ int main()
 	createNode(&head, 7);
 	createNode(&head, 9);
 	createNode(&head, 11);
+	createNode(&head, 15);
 
 	insert_at_beginning(&head, 1);
-	insert_anywhere(&head, 7, 20);
-	delete_last_node(head);
+	insert_anywhere(&head, 15, 20);
+
+	std::cout << "Initial list: " << std::endl;
+	Node * tmp = new Node();
+	tmp = head;
+	while (tmp != NULL)
+	{
+
+		std::cout << tmp->value << std::endl;
+
+		tmp = tmp->next;
+	}
+
+	head = delete_a_node(head, 1);
+
+	std::cout << "Final list: " << std::endl;
 
 	while (head != NULL)
 	{
 		std::cout << head->value << std::endl;
+
 		head = head->next;
 	}
 }
